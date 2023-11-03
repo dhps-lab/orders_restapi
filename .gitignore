@@ -2,7 +2,7 @@
 ./postgres_data/*
 
 ### air dev ##
-./tmp/*
+tmp
 ### dotenv ###
 .env
 

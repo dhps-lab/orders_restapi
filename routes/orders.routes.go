@@ -23,8 +23,6 @@ type WorkOrderCreateInput struct {
 }
 
 func GetOrdersHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var orders []models.WorkOrder
 	db.Database.Find(&orders)
 	respondJSON(w, http.StatusOK, orders)
@@ -33,9 +31,7 @@ func GetOrdersHandler(w http.ResponseWriter, r *http.Request) {
 func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 
 	var input WorkOrderCreateInput
-
 	json.NewDecoder(r.Body).Decode(&input)
-
 	validate = validator.New()
 	err := validate.Struct(input)
 	if err != nil {
@@ -49,7 +45,6 @@ func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 	order.PlannedDateBegin = input.PlannedDateBegin
 	order.PlannedDateEnd = input.PlannedDateEnd
 	order.Status = models.New
-	log.Println("Orden entrada: ", order)
 
 	createdOrder := db.Database.Create(&order)
 	log.Println(createdOrder.RowsAffected)
