@@ -16,7 +16,7 @@ import (
 var validate *validator.Validate
 
 type WorkOrderCreateInput struct {
-	CustomerId       string    `json:"customer_id"`
+	CustomerId       string    `json:"customer_id" validate:"required"`
 	Title            string    `json:"title" validate:"required"`
 	PlannedDateBegin time.Time `json:"planned_date_begin" validate:"required"`
 	PlannedDateEnd   time.Time `json:"planned_date_end" validate:"required"`
@@ -24,7 +24,7 @@ type WorkOrderCreateInput struct {
 
 func GetOrdersHandler(w http.ResponseWriter, r *http.Request) {
 	var orders []models.WorkOrder
-	db.Database.Find(&orders)
+	db.Database.Preload("Customer").Find(&orders)
 	respondJSON(w, http.StatusOK, orders)
 }
 
@@ -39,9 +39,15 @@ func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	customer := getCustomerOrErrorById(input.CustomerId, w, r)
+	if customer == nil {
+		return
+	}
+
 	var order models.WorkOrder
 	order.Id = uuid.New().String()
 	order.Title = input.Title
+	order.CustomerId = input.CustomerId
 	order.PlannedDateBegin = input.PlannedDateBegin
 	order.PlannedDateEnd = input.PlannedDateEnd
 	order.Status = models.New
@@ -54,7 +60,7 @@ func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(order)
+	respondJSON(w, http.StatusOK, order)
 }
 
 func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
@@ -100,7 +106,7 @@ func UpdateOrderHandler(w http.ResponseWriter, r *http.Request) {
 
 func getWorkOrderOrErrorById(id string, w http.ResponseWriter, r *http.Request) *models.WorkOrder {
 	workOrder := &models.WorkOrder{}
-	err := db.Database.First(&workOrder, models.WorkOrder{Id: id}).Error
+	err := db.Database.Preload("Customer").First(&workOrder, models.WorkOrder{Id: id}).Error
 	if err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return nil

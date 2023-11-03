@@ -18,7 +18,8 @@ type WorkOrder struct {
 	gorm.Model
 
 	Id               string `json:"id" gorm:"primarykey"`
-	CustomerId       string
+	CustomerId       string `json:"customer_id" gorm:"references:Id;not null"`
+	Customer         Customer
 	Title            string    `json:"title"`
 	PlannedDateBegin time.Time `json:"planned_date_begin"`
 	PlannedDateEnd   time.Time `json:"planned_date_end"`
