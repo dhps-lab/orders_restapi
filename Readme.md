@@ -20,3 +20,9 @@ Set up Databases
 ```
 docker-compose -up -d
 ```
+
+Swagger file:
+
+```
+swagger.json
+```
