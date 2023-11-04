@@ -19,12 +19,28 @@ type CustomerInput struct {
 	Address   string `json:"address" validate:"required"`
 }
 
+// swagger:operation GET /customers Customer GetCustomersHandler
+// Get Customer List
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func GetCustomersHandler(w http.ResponseWriter, r *http.Request) {
 	customers := []models.Customer{}
 	db.Database.Find(&customers)
 	respondJSON(w, http.StatusOK, customers)
 }
 
+// swagger:operation GET /customer/{id} Customer GetCustomerHandler
+// Get Customer
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func GetCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -35,6 +51,15 @@ func GetCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	respondJSON(w, http.StatusOK, customer)
 }
+
+// swagger:operation POST /customer Customer CreateCustomerHandler
+// Create Customer
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func CreateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	var input CustomerInput
 	json.NewDecoder(r.Body).Decode(&input)
@@ -63,6 +88,14 @@ func CreateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusCreated, customer)
 }
 
+// swagger:operation PUT /customer Customer UpdateCustomerHandler
+// Update Customer
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func UpdateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 

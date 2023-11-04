@@ -39,6 +39,14 @@ func GetOrdersHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, orders)
 }
 
+// swagger:operation POST /order WorkOrder CreateOrderHandler
+// Create WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 
 	var input WorkOrderCreateInput
@@ -74,6 +82,14 @@ func CreateOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, order)
 }
 
+// swagger:operation GET /order/{id} WorkOrder GetOrdersHandler
+// Get WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -85,6 +101,14 @@ func GetOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, workOrder)
 }
 
+// swagger:operation PUT /order/{id} WorkOrder UpdateOrderHandler
+// Update WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func UpdateOrderHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -115,6 +139,14 @@ func UpdateOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, workOrder)
 }
 
+// swagger:operation PUT /order/{id}/complete WorkOrder completeOrderHandler
+// Complete WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func completeOrderHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -160,6 +192,14 @@ func completeOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, workOrder)
 }
 
+// swagger:operation PUT /order/{id}/cancel WorkOrder cancelOrderHandler
+// Cancel WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func cancelOrderHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -184,6 +224,14 @@ func cancelOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, workOrder)
 }
 
+// swagger:operation GET /orders/customer/{id} WorkOrder GetOrdersHandler
+// Get WorkOrder List
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func getOrdersByCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
@@ -201,6 +249,14 @@ func getOrdersByCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, ordersByCustomer)
 }
 
+// swagger:operation POST /order/customer/{id}/deactivate WorkOrder GetOrdersHandler
+// Get WorkOrder
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func deactivateCustomerOrderHandler(w http.ResponseWriter, r *http.Request) {
 	order := &models.WorkOrder{}
 	params := mux.Vars(r)
@@ -235,6 +291,14 @@ func deactivateCustomerOrderHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, order)
 }
 
+// swagger:operation GET /orders/filter WorkOrder GetOrdersByFilterHandler
+// Get WorkOrder List
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func GetOrdersByFilterHandler(w http.ResponseWriter, r *http.Request) {
 	queryParams := r.URL.Query()
 	since := queryParams.Get("since")

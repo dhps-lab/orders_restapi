@@ -2,6 +2,92 @@
   "swagger": "2.0",
   "info": {},
   "paths": {
+    "/customer": {
+      "put": {
+        "description": "Update Customer",
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "UpdateCustomerHandler"
+      },
+      "post": {
+        "description": "Create Customer",
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "CreateCustomerHandler"
+      }
+    },
+    "/customer/{id}": {
+      "get": {
+        "description": "Get Customer",
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "GetCustomerHandler"
+      }
+    },
+    "/customers": {
+      "get": {
+        "description": "Get Customer List",
+        "tags": [
+          "Customer"
+        ],
+        "operationId": "GetCustomersHandler"
+      }
+    },
+    "/order": {
+      "post": {
+        "description": "Create WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "CreateOrderHandler"
+      }
+    },
+    "/order/customer/{id}/deactivate": {
+      "post": {
+        "description": "Get WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "GetOrdersHandler"
+      }
+    },
+    "/order/{id}": {
+      "get": {
+        "description": "Get WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "GetOrdersHandler"
+      },
+      "put": {
+        "description": "Update WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "UpdateOrderHandler"
+      }
+    },
+    "/order/{id}/cancel": {
+      "put": {
+        "description": "Cancel WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "cancelOrderHandler"
+      }
+    },
+    "/order/{id}/complete": {
+      "put": {
+        "description": "Complete WorkOrder",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "completeOrderHandler"
+      }
+    },
     "/orders": {
       "get": {
         "description": "Get WorkOrder list",
@@ -9,6 +95,24 @@
           "WorkOrder"
         ],
         "operationId": "GetOrdersHandler"
+      }
+    },
+    "/orders/customer/{id}": {
+      "get": {
+        "description": "Get WorkOrder List",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "GetOrdersHandler"
+      }
+    },
+    "/orders/filter": {
+      "get": {
+        "description": "Get WorkOrder List",
+        "tags": [
+          "WorkOrder"
+        ],
+        "operationId": "GetOrdersByFilterHandler"
       }
     }
   }
