@@ -12,11 +12,12 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 	db.DBConnection()
+	db.RedisClient()
 
 	db.Database.AutoMigrate(&models.Customer{})
 	db.Database.AutoMigrate(&models.WorkOrder{})

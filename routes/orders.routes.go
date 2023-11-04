@@ -135,6 +135,11 @@ func completeOrderHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	if workOrder.Status != models.New {
+		respondError(w, http.StatusBadRequest, "Bad request")
+		return
+	}
+
 	workOrder.Status = models.Done
 	err := db.Database.Save(&workOrder).Error
 	if err != nil {
@@ -142,8 +147,13 @@ func completeOrderHandler(w http.ResponseWriter, r *http.Request) {
 		respondError(w, http.StatusInternalServerError, "Internal server Error")
 		return
 	}
-
-	// Call Redis event
+	log.Print("I'm working with redis")
+	err = db.Publish_order(*workOrder)
+	if err != nil {
+		log.Println(err)
+		respondError(w, http.StatusInternalServerError, "Internal server Error")
+		return
+	}
 
 	respondJSON(w, http.StatusOK, workOrder)
 }
