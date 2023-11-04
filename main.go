@@ -11,6 +11,18 @@ import (
 	"github.com/joho/godotenv"
 )
 
+//   Product Api:
+//    version: 0.1
+//    title: Work Orders Api
+//   Schemes: http
+//   Host:
+//   BasePath: /api/v1
+//      Consumes:
+//      - application/json
+//   Produces:
+//   - application/json
+//   SecurityDefinitions:
+//   swagger:meta
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -24,6 +36,7 @@ func main() {
 
 	r := mux.NewRouter()
 
+	routes.Swagger(r)
 	routes.SetRoutes(r)
 
 	http.ListenAndServe(":3000", r)

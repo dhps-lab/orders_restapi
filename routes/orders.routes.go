@@ -25,12 +25,14 @@ type WorkOrderCreateInput struct {
 	PlannedDateEnd   time.Time `json:"planned_date_end" validate:"required"`
 }
 
-type filterInput struct {
-	Since  string
-	Until  string
-	Status string `validate:"status"`
-}
-
+// swagger:operation GET /orders WorkOrder GetOrdersHandler
+// Get WorkOrder list
+//
+// ---
+// responses:
+//
+//  401: CommonError
+//  200: CommonSuccess
 func GetOrdersHandler(w http.ResponseWriter, r *http.Request) {
 	var orders []models.WorkOrder
 	db.Database.Preload("Customer").Find(&orders)

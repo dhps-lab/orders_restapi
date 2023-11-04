@@ -1,5 +1,6 @@
 ### database ###
 ./postgres_data/*
+./redis/
 
 ### air dev ##
 tmp
@@ -47,3 +48,5 @@ go.work
 # Ignore all local history of files
 .history
 .ionide
+tmp/build-errors.log
+tmp/main
