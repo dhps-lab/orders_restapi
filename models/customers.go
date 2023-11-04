@@ -18,3 +18,5 @@ type Customer struct {
 	IsActive  bool      `gorm:"not null"`
 	CreatedAt time.Time `gorm:"not null"`
 }
+
+const DeactivateCustomer string = "Order to deactivate customer"

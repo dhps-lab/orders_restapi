@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/dhps-lab/orders_restapi/db"
 	"github.com/dhps-lab/orders_restapi/models"
@@ -66,6 +67,7 @@ func UpdateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	id := params["id"]
+	log.Println("Is coming here")
 	customer := getCustomerOrErrorById(id, w, r)
 	if customer == nil {
 		return
@@ -94,7 +96,7 @@ func UpdateCustomerHandler(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, http.StatusOK, customer)
 }
 
-func DeleteCustomerHandler(w http.ResponseWriter, r *http.Request) {}
+// func DeleteCustomerHandler(w http.ResponseWriter, r *http.Request) {}
 
 func getCustomerOrErrorById(id string, w http.ResponseWriter, r *http.Request) *models.Customer {
 	customer := &models.Customer{}
@@ -103,5 +105,54 @@ func getCustomerOrErrorById(id string, w http.ResponseWriter, r *http.Request) *
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return nil
 	}
+	return customer
+}
+
+func getAllCustomersActive(w http.ResponseWriter, r *http.Request) {
+	log.Println("GetCustomersActiveHandler")
+	customers := []*models.Customer{}
+	err := db.Database.First(&customers, models.Customer{IsActive: true}).Error
+	if err != nil {
+		respondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondJSON(w, http.StatusOK, customers)
+}
+
+func activateCustomer(id string, w http.ResponseWriter, r *http.Request) *models.Customer {
+	customer := getCustomerOrErrorById(id, w, r)
+	if customer == nil {
+		log.Println("Customer not found")
+		return nil
+	}
+	customer.IsActive = true
+	customer.StartDate = time.Now()
+
+	updatedCustomer := db.Database.Save(&customer)
+	err := updatedCustomer.Error
+	if err != nil {
+		log.Println("Error activating customer")
+		return nil
+	}
+	log.Println("Customer activated successfully")
+	return customer
+}
+
+func deactivateCustomer(id string, w http.ResponseWriter, r *http.Request) *models.Customer {
+	customer := getCustomerOrErrorById(id, w, r)
+	if customer == nil {
+		log.Println("Customer not found")
+		return nil
+	}
+	customer.IsActive = false
+	customer.EndDate = time.Now()
+
+	updatedCustomer := db.Database.Save(&customer)
+	err := updatedCustomer.Error
+	if err != nil {
+		log.Println("Error deactivating customer")
+		return nil
+	}
+	log.Println("Customer deactivated successfully")
 	return customer
 }
